@@ -1,33 +1,31 @@
 var app = angular.module("yellowApp", []);
 
-app.controller("YellowController", ["$scope", "$http", function($scope, $http) {
-  $scope.usersList = [];
+app.controller("YellowController", ["$http", function($http) {
+  var vm=this;
+  vm.usersList = [];
 
-
-
-  $scope.getUsers = function() {
+  vm.getUsers = function() {
     $http.get("/users").then(function(response) {
      console.log('created users');
     }); //  $http.get
-    $scope.updateUsers();
+    vm.updateUsers();
   };  //  $scope.getUsers
 
-
-  $scope.updateUsers = function() {
+  vm.updateUsers = function() {
     $http.get("/all").then(function(response) {
-      $scope.usersList = response.data;
+      vm.usersList = response.data;
     });
   };
 
-  $scope.deleteUser = function(user) {
+  vm.deleteUser = function(user) {
     // console.log("Hello", user._id);
     // This will delete the user from the database, but not from the DOM -> use Array.splice()
     $http.delete("/deleteUsers/" + user._id).then(function(response) {
       console.log("Deleted");
-    $scope.updateUsers();
+    vm.updateUsers();
     }); //  $http.delete
   };  //  $scope.deleteUser
 
-  $scope.updateUsers();
+  vm.updateUsers();
 
 }]); // controller
